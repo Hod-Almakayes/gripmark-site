@@ -129,7 +129,7 @@ footer { border-top: 1px solid var(--line); margin-top: 56px; padding: 20px 0 40
     KEY = key;
     DATA = JSON.parse(new TextDecoder().decode(plain));
     store('gm_pw', pw);
-    document.title = 'GripMark and GLOW';
+    document.title = 'GripMark and GLOW: Robot Gripper Localization';
     render();
   }
 
@@ -185,8 +185,10 @@ footer { border-top: 1px solid var(--line); margin-top: 56px; padding: 20px 0 40
     function play(v) {
       frame.src = 'https://drive.google.com/file/d/' + v.drive + '/preview';
       const pct = (100 * v.detected / Math.max(v.frames, 1)).toFixed(1);
-      const stat = v.detected < 0 ? v.frames.toLocaleString() + ' frames, earlier pipeline (not GLOW)'
+      let stat = v.detected < 0 ? v.frames.toLocaleString() + ' frames, earlier pipeline (not GLOW)'
         : v.frames.toLocaleString() + ' frames, gripper detected in ' + pct + '%';
+      if (v.err !== null && v.err !== undefined) stat += ', marker error ' + v.err.toFixed(2) + ' px (' + (100 * v.pck).toFixed(1) + '% within 2.5 px)';
+      else if (v.jitter !== null && v.jitter !== undefined) stat += ', jitter ' + v.jitter.toFixed(2) + ' px';
       np.innerHTML = '<b>' + esc(v.name) + '</b><span>' + esc(groups[v.group][0]) + (v.split && v.split !== 'unlabeled' ? ', ' + esc(v.split) + ' split' : '') +
         '</span><span>' + stat + '</span>' +
         '<a href="https://drive.google.com/file/d/' + v.drive + '/view" target="_blank" rel="noopener">Open on Drive</a>' +
