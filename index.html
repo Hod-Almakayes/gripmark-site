@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Private project page</title>
+<style>
+:root {
+  --bg: #f7f7f5; --surface: #ffffff; --text: #1d1d1b; --muted: #5f5f5a; --line: #e2e1dc;
+  --accent: #1f6f8b; --accent-soft: #e3f0f4; --warn: #9a5b00;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141514; --surface: #1d1f1e; --text: #ecebe6; --muted: #a3a29b; --line: #33352f;
+    --accent: #6fb8d2; --accent-soft: #1d3540; --warn: #e2a64a;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141514; --surface: #1d1f1e; --text: #ecebe6; --muted: #a3a29b; --line: #33352f;
+  --accent: #6fb8d2; --accent-soft: #1d3540; --warn: #e2a64a;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+a { color: var(--accent); }
+.wrap { max-width: 1060px; margin: 0 auto; padding: 0 16px; }
+header.top { border-bottom: 1px solid var(--line); background: var(--surface); }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; }
+header.top b { letter-spacing: .02em; }
+nav a { margin-left: 16px; text-decoration: none; color: var(--muted); font-size: 15px; }
+nav a:hover { color: var(--accent); }
+@media (max-width: 640px) { nav { display: none; } }
+h1 { font-size: clamp(28px, 5vw, 42px); line-height: 1.15; margin: 40px 0 12px; }
+h2 { font-size: 24px; margin: 48px 0 12px; padding-top: 8px; }
+h3 { font-size: 18px; margin: 24px 0 8px; }
+.lead { font-size: 18px; color: var(--muted); max-width: 760px; }
+.authors { margin: 16px 0 4px; }
+.affil { color: var(--muted); font-size: 14px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 24px 0; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px;
+  text-decoration: none; color: var(--text); display: block; }
+a.card:hover, button.card:hover { border-color: var(--accent); }
+button.card { font: inherit; text-align: left; cursor: pointer; width: 100%; }
+.card .k { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.card .v { font-weight: 600; margin-top: 2px; }
+.card .s { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.note { font-size: 13px; color: var(--warn); }
+figure { margin: 20px 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+figure img { width: 100%; height: auto; display: block; }
+figure.narrow { max-width: 360px; }
+figcaption { color: #5f5f5a; font-size: 14px; margin-top: 8px; }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; background: var(--surface); }
+th, td { border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left; white-space: nowrap; }
+th { font-weight: 600; color: var(--muted); font-size: 13px; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+pre { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; overflow-x: auto; font-size: 13px; }
+code { font-size: 14px; }
+.player { background: #000; border-radius: 10px; overflow: hidden; aspect-ratio: 16/9; }
+.player iframe { width: 100%; height: 100%; border: 0; display: block; }
+.nowplaying { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; margin: 10px 0 4px; }
+.nowplaying b { font-family: ui-monospace, monospace; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; color: var(--muted); margin: 8px 0 16px; }
+.sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 6px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 6px; }
+.chip { border: 1px solid var(--line); background: var(--surface); color: var(--text); border-radius: 999px;
+  padding: 5px 12px; font: inherit; font-size: 14px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.gdesc { color: var(--muted); font-size: 14px; min-height: 22px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-top: 10px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; cursor: pointer;
+  padding: 0; font: inherit; color: var(--text); text-align: left; }
+.tile img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+.tile span { display: block; padding: 6px 8px; font-size: 12px; font-family: ui-monospace, monospace; overflow-wrap: anywhere; }
+.tile[aria-current="true"] { outline: 2px solid var(--accent); }
+footer { border-top: 1px solid var(--line); margin-top: 56px; padding: 20px 0 40px; color: var(--muted); font-size: 14px; }
+/* lock screen */
+#lock { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+#lock form { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 28px; width: 100%; max-width: 360px; }
+#lock h1 { font-size: 22px; margin: 0 0 6px; }
+#lock p { color: var(--muted); margin: 0 0 18px; font-size: 14px; }
+#lock input { width: 100%; font: inherit; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--bg); color: var(--text); }
+#lock button { margin-top: 12px; width: 100%; font: inherit; font-weight: 600; padding: 10px; border-radius: 8px; border: 0;
+  background: var(--accent); color: #fff; cursor: pointer; }
+#lock .err { color: #c0392b; font-size: 14px; min-height: 20px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div id="lock">
+  <form id="lockform" autocomplete="off">
+    <h1>Private project page</h1>
+    <p>Enter the password to view this page.</p>
+    <input id="pw" type="password" aria-label="Password" placeholder="Password" autofocus>
+    <button type="submit">Open</button>
+    <div class="err" id="err" role="alert"></div>
+  </form>
+</div>
+<div id="app" hidden></div>
+<script>
+(function () {
+  const ITER = 250000;
+  let KEY = null, DATA = null;
+  const enc = new TextEncoder();
+
+  async function deriveKey(pw, salt) {
+    const base = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: ITER, hash: 'SHA-256' },
+      base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  }
+  async function fetchBytes(url) {
+    const r = await fetch(url, { cache: 'no-cache' });
+    if (!r.ok) throw new Error('fetch ' + url);
+    return new Uint8Array(await r.arrayBuffer());
+  }
+  async function decrypt(buf, key) {
+    return crypto.subtle.decrypt({ name: 'AES-GCM', iv: buf.slice(16, 28) }, key, buf.slice(28));
+  }
+  function store(k, v) { try { v === null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v); } catch (e) {} }
+  function load(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+
+  async function unlock(pw) {
+    const buf = await fetchBytes('assets/site.enc');
+    const key = await deriveKey(pw, buf.slice(0, 16));
+    const plain = await decrypt(buf, key);  // throws on a wrong password
+    KEY = key;
+    DATA = JSON.parse(new TextDecoder().decode(plain));
+    store('gm_pw', pw);
+    document.title = 'GripMark and GLOW';
+    render();
+  }
+
+  document.getElementById('lockform').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const err = document.getElementById('err');
+    err.textContent = 'Checking...';
+    try { await unlock(document.getElementById('pw').value); }
+    catch (x) { err.textContent = 'Wrong password.'; }
+  });
+  const saved = load('gm_pw');
+  if (saved) unlock(saved).catch(() => store('gm_pw', null));
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+  function render() {
+    document.getElementById('lock').hidden = true;
+    const app = document.getElementById('app');
+    app.innerHTML = DATA.html;
+    app.hidden = false;
+    document.querySelectorAll('[data-pdf]').forEach(b => b.addEventListener('click', () => openPdf(b)));
+    const lo = document.getElementById('logout');
+    if (lo) lo.addEventListener('click', (e) => { e.preventDefault(); store('gm_pw', null); location.reload(); });
+    gallery();
+  }
+
+  const pdfCache = {};
+  async function openPdf(btn) {
+    const file = btn.dataset.pdf, name = btn.dataset.name;
+    const w = window.open('', '_blank');  // opened inside the click, so pop-up blockers allow it
+    const s = btn.querySelector('.s'), old = s.textContent;
+    s.textContent = 'Decrypting...';
+    try {
+      if (!pdfCache[file]) {
+        const plain = await decrypt(await fetchBytes('assets/' + file), KEY);
+        pdfCache[file] = URL.createObjectURL(new Blob([plain], { type: 'application/pdf' }));
+      }
+      if (w) w.location = pdfCache[file];
+      else { const a = document.createElement('a'); a.href = pdfCache[file]; a.download = name; a.click(); }
+      s.textContent = old;
+    } catch (x) { if (w) w.close(); s.textContent = 'Could not open the PDF'; }
+  }
+
+  function gallery() {
+    const root = document.getElementById('gallery');
+    if (!root) return;
+    const vids = DATA.videos, groups = DATA.groups;
+    const filters = document.getElementById('filters'), grid = document.getElementById('grid'),
+      gdesc = document.getElementById('gdesc'), frame = document.getElementById('frame'), np = document.getElementById('np');
+    const keys = Object.keys(groups).filter(g => vids.some(v => v.group === g));
+    let current = keys[0], sub = 'all';
+
+    function play(v) {
+      frame.src = 'https://drive.google.com/file/d/' + v.drive + '/preview';
+      const pct = (100 * v.detected / Math.max(v.frames, 1)).toFixed(1);
+      np.innerHTML = '<b>' + esc(v.name) + '</b><span>' + esc(groups[v.group][0]) + (v.split && v.split !== 'unlabeled' ? ', ' + esc(v.split) + ' split' : '') +
+        '</span><span>' + v.frames.toLocaleString() + ' frames, gripper detected in ' + pct + '%</span>' +
+        '<a href="https://drive.google.com/file/d/' + v.drive + '/view" target="_blank" rel="noopener">Open on Drive</a>' +
+        (v.csv ? '<a href="https://drive.google.com/file/d/' + v.csv + '/view" target="_blank" rel="noopener">Predictions (CSV)</a>' : '');
+      grid.querySelectorAll('.tile').forEach(t => t.setAttribute('aria-current', t.dataset.name === v.name));
+    }
+    function draw() {
+      filters.innerHTML = '';
+      keys.forEach(g => {
+        const n = vids.filter(v => v.group === g).length;
+        const b = document.createElement('button');
+        b.className = 'chip'; b.textContent = groups[g][0] + ' (' + n + ')';
+        b.setAttribute('aria-pressed', g === current);
+        b.onclick = () => { current = g; sub = 'all'; draw(); };
+        filters.appendChild(b);
+      });
+      gdesc.textContent = groups[current][1];
+      let list = vids.filter(v => v.group === current);
+      const subs = current === 'labeled' ? ['all', 'brio', 'c922', 'lifecam', 'train', 'val', 'test'] : ['all', 'brio', 'c922', 'lifecam'];
+      const sf = document.getElementById('subfilters');
+      sf.innerHTML = '';
+      subs.forEach(s => {
+        const b = document.createElement('button');
+        b.className = 'chip'; b.textContent = s === 'all' ? 'All' : s;
+        b.setAttribute('aria-pressed', s === sub);
+        b.onclick = () => { sub = s; draw(); };
+        sf.appendChild(b);
+      });
+      if (sub !== 'all') list = list.filter(v => v.camera === sub || v.split === sub);
+      grid.innerHTML = '';
+      list.forEach(v => {
+        const t = document.createElement('button');
+        t.className = 'tile'; t.dataset.name = v.name;
+        t.innerHTML = '<img alt="" src="' + v.thumb + '"><span>' + esc(v.name) + '</span>';
+        t.onclick = () => { play(v); document.getElementById('player').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+        grid.appendChild(t);
+      });
+    }
+    draw();
+    const first = vids.find(v => v.split === 'test') || vids[0];
+    if (first) play(first);
+  }
+})();
+</script>
+</body>
+</html>
