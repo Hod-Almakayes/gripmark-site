@@ -228,7 +228,7 @@ footer { border-top: 1px solid var(--line); margin-top: 56px; padding: 20px 0 40
       });
     }
     draw();
-    const first = vids.find(v => v.split === 'test') || vids[0];
+    const first = vids.find(v => v.group === 'low_light') || vids.find(v => v.split === 'test') || vids[0];
     if (first) play(first);
   }
 })();
